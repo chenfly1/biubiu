@@ -1,0 +1,141 @@
+{% extends "base.html" %}
+{% block label %}
+    <h1 class="page-header">桌面资源</h1>
+{% endblock %}
+
+{% block content %}
+        <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col-lg-2">
+                            <h5>设备详情</h5>
+                        </div>
+                        <div class="col-lg-10">
+
+
+                        </div>
+                    </div>
+                </div>
+                <!-- /.panel-heading -->
+                <div class="panel-body">
+                    <form method="post" >
+                        <div class="col-lg-12">
+                        <form  method = "post">
+                            <div class="form-group input-group ">
+                                <span class="btn-success input-group-addon ">设备编码</span>
+                                <input class="form-control" placeholder="例如：笔记本“PF0603HR”" id="sn" name="sn" value="{{ d_data.sn }}">
+                                <div id = "sn_error" style = "color: red"></div>
+                                <span class="btn-success input-group-addon ">设备名称</span>
+                                <input class="form-control" placeholder="笔记本" id="name" name="name" value="{{ d_data.name }}">
+                                <div id = "name_error" style = "color: red"></div>
+                                <span class="btn-success input-group-addon ">品	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;牌</span>
+                                <input class="form-control"  placeholder="联想" id="brand" name="brand" value="{{ d_data.brand }}">
+                                <div id = "brand_error" style = "color: red"></div>
+                            </div>
+
+                            <div class="form-group input-group">
+                                <span class="btn-success input-group-addon ">数	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;量</span>
+                                <input class="form-control"  placeholder="1" id="number" name="number" value="{{ d_data.number }}">
+                                <div id = "number_error" style = "color: red"></div>
+                                <span class="btn-success input-group-addon ">型	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;号</span>
+                                <input class="form-control"  placeholder="E470" id="type" name="type" value="{{ d_data.type }}">
+                                <div id = "type_error" style = "color: red"></div>
+                                <span class="btn-success input-group-addon ">部	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;门</span>
+                                <input class="form-control"  placeholder="系统运维部" id="department" name="department" value="{{ d_data.department }}">
+                                <div id = "department_error" style = "color: red"></div>
+                            </div>
+                            <div class="form-group input-group">
+                                <span class="btn-success input-group-addon ">使&nbsp;&nbsp;用&nbsp;人</span>
+                                <input class="form-control"  placeholder="张三/李四" id="user" name="user" value="{{ d_data.user }}">
+                                <div id = "user_error" style = "color: red"></div>
+                                <span class="btn-success input-group-addon ">状	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;态</span>
+                                <input class="form-control"  placeholder="在用/闲置" id="statue" name="statue" value="{{ d_data.statue }}">
+                                <div id = "statue_error" style = "color: red"></div>
+                                <span class="btn-success input-group-addon ">所在位置</span>
+                                <input class="form-control"  placeholder="3A区/库房" id="location" name="location" value="{{ d_data.location }}">
+                                <div id = "location_error" style = "color: red"></div>
+                            </div>
+                            <div class="form-group input-group">
+                                <span class="btn-success input-group-addon ">出厂时间</span>
+                                <input class="form-control"  type="date" id="delivery_time" name="delivery_time" value="{{ d_data.delivery_time }}">
+                                <div id = "delivery_time_error" style = "color: red"></div>
+                                <span class="btn-success input-group-addon ">备&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注</span>
+                                <input class="form-control"  placeholder="备注" id="remark" name="remark" value="{{ d_data.remark }}">
+                            </div>
+                        </form>
+                    </div>
+                        <div class="panel-heading">
+                            <div class="row">
+
+                                <div class="col-lg-12">
+
+                                    <button type="submit" class="btn btn-info btn-mini" style="float:right;" id="sub_infosave">保存</button>
+                                    <button class="btn btn-info btn-mini" style="float:right;">
+                                        <a href="/asset/desktop/">返回</a>
+                                    </button>
+
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <!-- /.panel-body -->
+            </div>
+            <!-- /.panel -->
+        </div>
+        <!-- /.col-lg-12 -->
+        </div>
+
+{% endblock %}
+
+{% block script %}
+    <script>
+    $(function () {
+        $("#sub_infosave").click(
+                function () {
+                    var sn = $("#sn").val();
+                    var name = $("#name").val();
+                    var brand = $("#brand").val();
+                    var number = $("#number").val();
+                    var type = $("#type").val();
+                    var department = $("#department").val();
+                    var user = $("#user").val();
+                    var statue = $("#statue").val();
+                    var location = $("#location").val();
+                    var delivery_time = $("#delivery_time").val();
+                    var remark = $("#remark").val();
+
+                    var formdata = new FormData(); //new一个form类来作为容器
+                    formdata.append("sn",sn);
+                    formdata.append("name",name);
+                    formdata.append("brand",brand);
+                    formdata.append("number",number);
+                    formdata.append("type",type);
+                    formdata.append("department",department);
+                    formdata.append("user",user);
+                    formdata.append("statue",statue);
+                    formdata.append("location",location);
+                    formdata.append("delivery_time",delivery_time);
+                    formdata.append("remark",remark);
+                    formdata.append("csrfmiddlewaretoken","{{ csrf_token }}");
+                    $.ajax({
+                                url:"/asset/desktop_info/"+{{ d_data.id }},
+                                type:"post",
+                                data:formdata,
+                                processData:false, //不进行序列化
+                                contentType:false, //不进行类型检测
+                                success:function (data) {
+
+                                    console.log(data)
+                                },
+                                error:function(error){
+                                    console.log(error)
+                                }
+                            })
+                }
+            )
+    })
+    </script>
+{% endblock %}
